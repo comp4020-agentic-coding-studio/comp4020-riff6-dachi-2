@@ -2,6 +2,7 @@
 import Card from "astro-theme-university/components/Card.astro";
 import CardGrid from "astro-theme-university/components/CardGrid.astro";
 import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
+import SemesterTimeline from "../components/SemesterTimeline.astro";
 import heroImage from "../assets/images/hero-home.png";
 import { courseMeta } from "../course-config";
 import { sessionLabels, siteConfig } from "../site-config";
@@ -43,6 +44,8 @@ import { sessionLabels, siteConfig } from "../site-config";
     door that used to be worse, you are the audience.
   </p>
 
+  <SemesterTimeline />
+
   <h2>Where to go next</h2>
   <CardGrid columns={2}>
     <Card title={sessionLabels.plural} href="/sessions/">
@@ -58,6 +61,8 @@ import { sessionLabels, siteConfig } from "../site-config";
 </ContentLayout>
 
 <style is:global>
+  body:has(.doorology-timeline) { --at-content-width: 84rem; }
+  body:has(.doorology-timeline) .at-main > p { max-width: 72ch; }
   /* Same light/dark-aware contrast fix as PageLayout.astro's .at-card-title
      — --at-secondary only clears AA in light mode, --at-primary only in
      dark. This page renders through ContentLayout directly rather than
