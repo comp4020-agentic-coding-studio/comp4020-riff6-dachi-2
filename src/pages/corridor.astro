@@ -1,0 +1,8 @@
+---
+import ContentLayout from 'astro-theme-university/layouts/ContentLayout.astro';
+import CourseCorridor from '../components/CourseCorridor.astro';
+import { siteConfig } from '../site-config';
+---
+<ContentLayout title="The course corridor" description="Twelve weeks, twelve doors. Walk into the next part of Doorology." {...siteConfig}>
+  <CourseCorridor />
+</ContentLayout>

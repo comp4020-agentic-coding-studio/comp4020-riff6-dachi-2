@@ -1,0 +1,89 @@
+---
+import { getPublishedCollection } from 'astro-course-university/content';
+import { withBase } from 'astro-theme-university/url';
+import '../styles/course-corridor.css';
+const [sessions, lectures, assessments] = await Promise.all([
+  getPublishedCollection('sessions'), getPublishedCollection('lectures'), getPublishedCollection('assessments'),
+]);
+const stages = ['Audit', 'Redesign', 'Prototype', 'Guide'];
+const weeks = sessions.sort((a, b) => a.data.week - b.data.week).map(studio => {
+  const week = studio.data.week;
+  const stage = week <= 4 ? 0 : week <= 8 ? 1 : week <= 11 ? 2 : 3;
+  return { week, title: studio.data.title, description: studio.data.description, stage,
+    links: [
+      ...lectures.filter(item => item.data.week === week).map(item => ({ label: 'Lecture', title: item.data.title, href: withBase(`/lectures/${item.id}/`) })),
+      { label: 'Studio', title: studio.data.title, href: withBase(`/sessions/${studio.id}/`) },
+      ...assessments.filter(item => item.data.week === week).map(item => ({ label: `Assessment · ${item.data.weight}%`, title: item.data.title, href: withBase(`/assessments/${item.id}/`) })),
+      { label: 'Door lab', title: 'Try a door before judging it', href: withBase('/lab/') },
+    ],
+  };
+});
+---
+<section class="course-corridor" data-corridor>
+  <div class="corridor-experience">
+    <div class="corridor-toolbar">
+      <div><strong>One corridor, a whole semester</strong><span data-corridor-position>At the entrance · Weeks 1 & 2</span></div>
+      <button type="button" data-corridor-reset>Back to the entrance</button>
+    </div>
+    <div class="corridor-viewport" data-corridor-viewport tabindex="0" role="region" aria-label="Walk through twelve course doors" aria-describedby="corridor-instructions">
+      <div class="corridor-world" data-corridor-world>
+        <div class="corridor-floor" aria-hidden="true"></div>
+        <div class="corridor-wall corridor-wall-left" aria-hidden="true"></div>
+        <div class="corridor-wall corridor-wall-right" aria-hidden="true"></div>
+        <div class="corridor-end" aria-hidden="true"><span>LOOK AGAIN.</span><small>You will never see a door the same way.</small></div>
+        {Array.from({ length: 7 }, (_, i) => <div class="corridor-light" aria-hidden="true" style={`--depth:${-350 - i * 600}px`}></div>)}
+        {weeks.map((week, i) => <div class="corridor-door-frame" data-frame={i} data-stage={week.stage} style={`--door-x:${i % 2 ? 407 : -407}px;--door-z:${-550 - Math.floor(i / 2) * 600}px;--door-turn:${i % 2 ? -90 : 90}deg`}>
+          <div class="corridor-door-room" aria-hidden="true"></div>
+          <a class="corridor-door" href={`#corridor-week-${week.week}`} data-door={i} aria-label={`Open Week ${week.week}: ${week.title}`}>
+            <span class="corridor-door-stage">{stages[week.stage]}</span>
+            <span class="corridor-door-number">{String(week.week).padStart(2, '0')}</span>
+            <strong>{week.title}</strong>
+            <span class="corridor-handle" aria-hidden="true"></span>
+            <span class="corridor-door-action">Enter this week →</span>
+          </a>
+          <span class="corridor-threshold" aria-hidden="true">Week {week.week}</span>
+        </div>)}
+      </div>
+      <div class="corridor-reticle" aria-hidden="true">+</div>
+      <div class="corridor-readout">
+        <p data-corridor-prompt aria-live="polite">Click a door, or focus this scene and start walking.</p>
+        <p id="corridor-instructions"><kbd>W</kbd> / <kbd>↑</kbd> forward · <kbd>S</kbd> / <kbd>↓</kbd> back · <kbd>A</kbd> <kbd>D</kbd> across · <kbd>Enter</kbd> open<br />Pause beside a door for 2 seconds to enter.</p>
+      </div>
+    </div>
+    <nav class="corridor-week-nav" aria-label="Choose a course door">
+      {weeks.map((week, i) => <a href={`#corridor-week-${week.week}`} data-jump={i} data-stage={week.stage} aria-label={`Enter Week ${week.week}: ${week.title}`}>W{week.week}</a>)}
+    </nav>
+    <div class="corridor-stages" aria-label="Course progression">{stages.map((stage, i) => <span data-stage={i}>{stage}</span>)}</div>
+  </div>
+  <dialog class="corridor-portal" data-corridor-portal aria-labelledby="corridor-portal-title">
+    <button type="button" class="corridor-back" data-corridor-close>← Back to the corridor</button>
+    <p data-portal-week>Week 1</p>
+    <h2 id="corridor-portal-title" tabindex="-1">First door</h2>
+    <p data-portal-description></p>
+    <nav data-portal-links aria-label="This week's resources"></nav>
+    <p class="corridor-departure" data-portal-departure role="status"></p>
+  </dialog>
+  <section class="corridor-list" aria-labelledby="corridor-list-title">
+    <h2 id="corridor-list-title">The corridor as a list</h2>
+    <p>Every door leads here too. Choose a week and go straight to its resources.</p>
+    <ol>
+      {weeks.map(week => <li id={`corridor-week-${week.week}`} data-stage={week.stage}>
+        <details><summary><span>W{week.week}</span><strong>{week.title}</strong><small>{stages[week.stage]}</small></summary>
+          <nav aria-label={`Week ${week.week} resources`}>{week.links.map(link => <a href={link.href}><strong>{link.label}</strong><span>{link.title}</span></a>)}</nav>
+        </details>
+      </li>)}
+    </ol>
+  </section>
+  <script is:inline type="application/json" data-corridor-data set:html={JSON.stringify(weeks).replace(/</g, '\\u003c')} />
+</section>
+<script>
+  import { mountCorridor } from '../scripts/course-corridor';
+  let cleanup: (() => void) | undefined;
+  function init() {
+    cleanup?.();
+    const root = document.querySelector<HTMLElement>('[data-corridor]');
+    cleanup = root ? mountCorridor(root) : undefined;
+  }
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => { cleanup?.(); cleanup = undefined; });
+</script>
