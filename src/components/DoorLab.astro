@@ -1,0 +1,121 @@
+---
+import { withBase } from 'astro-theme-university/url';
+import '../styles/door-lab.css';
+---
+
+<section class="door-lab" data-door-lab aria-label="Interactive door experiment">
+  <p class="door-lab-intro">A handle makes a promise. Does this door keep it? Try an action, change the hardware, then try again.</p>
+  <div class="door-lab-workbench">
+    <div class="door-lab-model" data-state="closed" data-hardware="handle" role="img" aria-label="Closed gold door with a pull handle" data-door-model>
+      <div class="door-model-caption"><span>One door, two signals</span><span data-hardware-label>Pull handle</span></div>
+      <div class="door-lab-stage" aria-hidden="true">
+        <div class="door-lab-floor"></div>
+        <div class="door-lab-assembly">
+          <div class="door-lab-opening"><span>THROUGH<br />HERE</span><div class="door-lab-beyond"></div></div>
+          <div class="door-lab-reveal door-lab-reveal-left"></div>
+          <div class="door-lab-reveal door-lab-reveal-right"></div>
+          <div class="door-lab-frame"></div>
+          <div class="door-lab-hinge door-lab-hinge-top"></div>
+          <div class="door-lab-hinge door-lab-hinge-bottom"></div>
+          <div class="door-lab-panel">
+            <span class="door-lab-number">03</span>
+            <div class="door-lab-window"><span></span></div>
+            <div class="door-lab-handle"><i></i></div>
+            <div class="door-lab-plate"><i></i></div>
+            <span class="door-lab-kickplate"></span>
+          </div>
+          <div class="door-lab-threshold"></div>
+        </div>
+      </div>
+      <span class="door-lab-state" data-door-state>Ready to try</span>
+    </div>
+    <div class="door-lab-controls">
+      <p class="door-lab-step">Week 3 · Hardware and what it tells you</p>
+      <h2>What would you try?</h2>
+      <p>Look at the hardware, then choose an action. Each attempt starts with the door closed.</p>
+      <div class="door-lab-actions" aria-label="Try the door">
+        <button type="button" data-door-action="push"><span aria-hidden="true">↗</span> Push</button>
+        <button type="button" data-door-action="pull"><span aria-hidden="true">↙</span> Pull</button>
+      </div>
+      <div class="door-lab-feedback" role="status" aria-live="polite" aria-atomic="true">
+        <strong data-door-result>Make your first move.</strong>
+        <p data-door-explanation>Does the shape of the hardware suggest pushing or pulling?</p>
+      </div>
+      <div class="door-lab-adjustments">
+        <button type="button" data-door-swap>Use a push plate</button>
+        <button type="button" data-door-reset>Reset</button>
+      </div>
+      <p class="door-lab-small">Swap the hardware to change the cue. The hinge and opening direction stay the same.</p>
+      <noscript><p>This door opens when pushed. A pull handle suggests the wrong action; replacing it with a push plate makes the cue agree with the opening direction.</p></noscript>
+    </div>
+  </div>
+  <div class="door-lab-reflection">
+    <div><h2>Same door. Clearer invitation.</h2><p>The <strong>affordance</strong> is what the door lets you do. The <strong>signifier</strong> is what its hardware tells you to try. For your audit, compare those two things before judging whether a door works well.</p></div>
+    <nav aria-label="Take the door experiment into the course">
+      <a href={withBase('/lectures/week-03-hardware/')}>Read the Week 3 lecture <span aria-hidden="true">↗</span></a>
+      <a href={withBase('/sessions/03-hardware-clinic/')}>Go to the hardware clinic <span aria-hidden="true">↗</span></a>
+      <a href={withBase('/assessments/door-audit/')}>Use this in the door audit <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+</section>
+
+<script>
+  function mountDoorLab(root: HTMLElement) {
+    const controller = new AbortController();
+    const options = { signal: controller.signal };
+    const model = root.querySelector<HTMLElement>('[data-door-model]')!;
+    const result = root.querySelector<HTMLElement>('[data-door-result]')!;
+    const explanation = root.querySelector<HTMLElement>('[data-door-explanation]')!;
+    const stateLabel = root.querySelector<HTMLElement>('[data-door-state]')!;
+    const hardwareLabel = root.querySelector<HTMLElement>('[data-hardware-label]')!;
+    const swap = root.querySelector<HTMLButtonElement>('[data-door-swap]')!;
+    let hardware: 'handle' | 'plate' = 'handle';
+    function setState(state: 'closed' | 'open' | 'blocked') {
+      model.dataset.state = state;
+      model.setAttribute('aria-label', `${state === 'open' ? 'Open' : 'Closed'} gold door with a ${hardware === 'handle' ? 'pull handle' : 'push plate'}${state === 'blocked' ? '; pulling is blocked by the frame' : ''}`);
+      stateLabel.textContent = state === 'open' ? 'Opened · away from you' : state === 'blocked' ? 'Blocked · wrong direction' : 'Ready to try';
+    }
+    function attempt(action: string) {
+      // Rewind each attempt so Push and Pull always test the same closed door.
+      model.classList.add('door-lab-rewind');
+      setState('closed');
+      void model.offsetWidth;
+      model.classList.remove('door-lab-rewind');
+      if (action === 'push') {
+        setState('open');
+        result.textContent = hardware === 'handle' ? 'It opens. The handle misled you.' : 'It opens. The cue matches the action.';
+        explanation.textContent = hardware === 'handle'
+          ? 'This door swings away from you. The pull handle suggests the opposite action. Try a push plate and compare.'
+          : 'A flat plate suggests pushing, and pushing opens this door. You changed the signifier; the opening direction stayed the same.';
+      } else {
+        setState('blocked');
+        result.textContent = hardware === 'handle' ? 'Blocked. A reasonable guess, a misleading handle.' : 'Blocked. This plate is a cue to push.';
+        explanation.textContent = hardware === 'handle'
+          ? 'The handle invites you to pull, but the frame stops the door opening towards you. The signal and the allowed movement disagree.'
+          : 'The hardware changed, but the door still opens away from you. Changing the signifier does not change the hinge or opening direction.';
+      }
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-door-action]').forEach(button => button.addEventListener('click', () => attempt(button.dataset.doorAction!), options));
+    swap.addEventListener('click', () => {
+      hardware = hardware === 'handle' ? 'plate' : 'handle';
+      model.dataset.hardware = hardware;
+      hardwareLabel.textContent = hardware === 'handle' ? 'Pull handle' : 'Push plate';
+      swap.textContent = hardware === 'handle' ? 'Use a push plate' : 'Use a pull handle';
+      setState('closed');
+      result.textContent = hardware === 'plate' ? 'A new cue. The same opening direction.' : 'The pull handle is back.';
+      explanation.textContent = 'Only the hardware has changed. Try the door again and compare what it suggests with what it allows.';
+    }, options);
+    root.querySelector<HTMLButtonElement>('[data-door-reset]')!.addEventListener('click', () => {
+      hardware = 'handle'; model.dataset.hardware = hardware; hardwareLabel.textContent = 'Pull handle'; swap.textContent = 'Use a push plate'; setState('closed');
+      result.textContent = 'Make your first move.'; explanation.textContent = 'Does the shape of the hardware suggest pushing or pulling?';
+    }, options);
+    return () => controller.abort();
+  }
+  let dispose: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    dispose?.();
+    const root = document.querySelector<HTMLElement>('[data-door-lab]');
+    dispose = root ? mountDoorLab(root) : undefined;
+  });
+  document.addEventListener('astro:before-swap', () => { dispose?.(); dispose = undefined; });
+</script>

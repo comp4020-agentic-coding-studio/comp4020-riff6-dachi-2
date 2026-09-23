@@ -1,0 +1,9 @@
+---
+import ContentLayout from 'astro-theme-university/layouts/ContentLayout.astro';
+import DoorLab from '../components/DoorLab.astro';
+import { siteConfig } from '../site-config';
+---
+
+<ContentLayout title="The door lab" description="Try the hardware. Then change what it tells you." {...siteConfig}>
+  <DoorLab />
+</ContentLayout>
