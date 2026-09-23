@@ -43,11 +43,26 @@ const weeks = sessions.sort((a, b) => a.data.week - b.data.week).map(studio => {
           </a>
           <span class="corridor-threshold" aria-hidden="true">Week {week.week}</span>
         </div>)}
+        <div class="corridor-student" data-corridor-student aria-hidden="true">
+          <div class="student-shadow"></div>
+          <div class="student-model" data-student-model>
+            {[
+              ['head', 40, 44, 36, 0, -184, 0],
+              ['body', 48, 66, 30, 0, -140, 0],
+              ['bag', 38, 48, 20, 0, -130, 25],
+              ['arm-left', 14, 62, 18, -33, -137, 0],
+              ['arm-right', 14, 62, 18, 33, -137, 0],
+              ['leg-left', 18, 74, 22, -13, -74, 0],
+              ['leg-right', 18, 74, 22, 13, -74, 0],
+            ].map(([part, width, height, depth, x, y, z]) => <div class={`student-part student-${part}`} style={`--part-x:${x}px;--part-y:${y}px;--part-z:${z}px;--w:${width}px;--h:${height}px;--d:${depth}px`}>
+              <div class="student-solid">{['front', 'back', 'left', 'right', 'top', 'bottom'].map(face => <i class={`student-face student-face-${face}`}></i>)}</div>
+            </div>)}
+          </div>
+        </div>
       </div>
-      <div class="corridor-reticle" aria-hidden="true">+</div>
       <div class="corridor-readout">
-        <p data-corridor-prompt aria-live="polite">Click a door, or focus this scene and start walking.</p>
-        <p id="corridor-instructions"><kbd>W</kbd> / <kbd>↑</kbd> forward · <kbd>S</kbd> / <kbd>↓</kbd> back · <kbd>A</kbd> <kbd>D</kbd> across · <kbd>Enter</kbd> open<br />Pause beside a door for 2 seconds to enter.</p>
+        <p data-corridor-prompt aria-live="polite">Click here, then use W A S D to walk your student to a door.</p>
+        <p id="corridor-instructions"><kbd>W</kbd> / <kbd>↑</kbd> forward · <kbd>S</kbd> / <kbd>↓</kbd> back · <kbd>A</kbd> <kbd>D</kbd> across · <kbd>Enter</kbd> open<br />Walk beside a door. Press Enter, or wait 2 seconds, to open it.</p>
       </div>
     </div>
     <nav class="corridor-week-nav" aria-label="Choose a course door">

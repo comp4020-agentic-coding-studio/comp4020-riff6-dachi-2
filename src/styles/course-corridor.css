@@ -13,14 +13,14 @@ body:has(.course-corridor) .at-main > .lead { font-size: 1.05rem; margin-bottom:
 .corridor-toolbar strong, .corridor-toolbar span { display: block; }
 .corridor-toolbar span { color: #e4c580; font-size: .8rem; margin-top: .15rem; }
 .corridor-toolbar button { background: transparent; color: #fbf4e5; border: 1px solid #ac9e80; border-radius: .3rem; padding: .55rem .8rem; font: inherit; font-size: .8rem; cursor: pointer; }
-.corridor-viewport { height: 590px; position: relative; overflow: hidden; perspective: 800px; perspective-origin: 50% 43%; background: radial-gradient(ellipse at 50% 30%, #827660, #302e29 75%); isolation: isolate; }
+.corridor-viewport { height: 590px; position: relative; overflow: hidden; perspective: 1250px; perspective-origin: 50% 36%; background: radial-gradient(ellipse at 50% 30%, #827660, #302e29 75%); isolation: isolate; }
 .corridor-viewport:focus-visible { outline: 3px solid #e4c580; outline-offset: -4px; }
-.corridor-world { position: absolute; top: 46%; left: 50%; transform-style: preserve-3d; transform: translate3d(0, 0, 120px); will-change: transform; }
+.corridor-world { position: absolute; top: 82%; left: 50%; transform-style: preserve-3d; transform: translate3d(0, 0, -520px) rotateX(-24deg) translate3d(0, -195px, 120px); will-change: transform; }
 .corridor-floor, .corridor-wall, .corridor-end, .corridor-light, .corridor-door-frame { position: absolute; top: 0; left: 0; transform-style: preserve-3d; }
 .corridor-floor { width: 840px; height: 4600px; transform: translate(-50%, -50%) translate3d(0, 195px, -2000px) rotateX(90deg); background: repeating-linear-gradient(0deg, transparent 0 298px, #6d624e 299px 301px), repeating-linear-gradient(90deg, #b5a58a 0 208px, #89795f 209px 211px); border: 4px solid #766b56; }
-.corridor-wall { width: 4600px; height: 610px; background: linear-gradient(to bottom, #c5b99d 0 12%, #eee5d2 12% 80%, #a5967d 80% 82%, #c1b298 82%); border-bottom: 12px solid #5e5546; }
-.corridor-wall-left { transform: translate(-50%, -50%) translate3d(-420px, -110px, -2000px) rotateY(90deg); }
-.corridor-wall-right { transform: translate(-50%, -50%) translate3d(420px, -110px, -2000px) rotateY(-90deg); }
+.corridor-wall { width: 4600px; height: 400px; background: linear-gradient(to bottom, #c5b99d 0 12%, #eee5d2 12% 80%, #a5967d 80% 82%, #c1b298 82%); border-bottom: 12px solid #5e5546; }
+.corridor-wall-left { transform: translate(-50%, -50%) translate3d(-420px, -5px, -2000px) rotateY(90deg); }
+.corridor-wall-right { transform: translate(-50%, -50%) translate3d(420px, -5px, -2000px) rotateY(-90deg); }
 .corridor-end { width: 840px; height: 610px; transform: translate(-50%, -50%) translate3d(0, -110px, -4260px); background: #d5c8aa; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #242421; border: 20px solid #96815b; }
 .corridor-end span { font-size: 75px; font-weight: 800; letter-spacing: -.06em; }
 .corridor-end small { font-size: 22px; }
@@ -36,8 +36,8 @@ body:has(.course-corridor) .at-main > .lead { font-size: 1.05rem; margin-bottom:
 .corridor-door-action { margin-top: auto; font-size: 13px; font-weight: 600; }
 .corridor-handle { position: absolute; width: 29px; height: 8px; right: 13px; top: 64%; background: #242421; border-radius: 3px; box-shadow: 3px 4px 0 #0003; }
 .corridor-threshold { position: absolute; bottom: -38px; left: 0; width: 100%; color: #242421; font-size: 15px; text-align: center; background: #f8efd9; }
-.corridor-reticle { position: absolute; left: 50%; top: 45%; color: #fff8db; font-size: 20px; pointer-events: none; text-shadow: 0 1px 4px #000; opacity: .65; }
-.corridor-readout { position: absolute; bottom: 0; left: 0; right: 0; padding: 3rem 1.4rem 1rem; background: linear-gradient(transparent, #151713e8 42%); color: #fff8e8; pointer-events: none; }
+.corridor-reticle { display: none; position: absolute; left: 50%; top: 45%; color: #fff8db; font-size: 20px; pointer-events: none; text-shadow: 0 1px 4px #000; opacity: .65; }
+.corridor-readout { position: absolute; bottom: 1rem; left: 1rem; max-width: 440px; padding: .8rem 1rem; border: 1px solid #ffffff30; border-radius: .5rem; background: #20231ded; color: #fff8e8; pointer-events: none; }
 .corridor-readout p { margin: .3rem 0; font-size: .78rem; }
 .corridor-readout p:first-child { font-size: 1.04rem; font-weight: 600; }
 .corridor-readout kbd { color: #e4c580; font: inherit; font-weight: 650; }
@@ -73,3 +73,34 @@ body:has(.course-corridor) .at-main > .lead { font-size: 1.05rem; margin-bottom:
 @keyframes corridor-enter { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
 @media (max-width: 899px) { .corridor-experience { display: none; } .corridor-list > ol { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .course-corridor *, .course-corridor *::before { animation: none !important; transition: none !important; } }
+
+/* A small student belongs to the same floor plane as the twelve doors. */
+.corridor-door-frame[data-near="true"] { outline: 5px solid #fff4ba; outline-offset: 5px; }
+.corridor-student, .student-model, .student-part, .student-solid { position: absolute; top: 0; left: 0; transform-style: preserve-3d; }
+.corridor-student { pointer-events: none; transform: translate3d(0, 195px, -120px); }
+.student-model { transition: transform 160ms ease-out; }
+.student-shadow { position: absolute; width: 112px; height: 80px; left: -56px; top: -40px; transform: translateY(-1px) rotateX(90deg); background: radial-gradient(ellipse, #211b2466, transparent 70%); }
+.student-part { transform: translate3d(var(--part-x), var(--part-y), var(--part-z)); }
+.student-solid { width: var(--w); height: var(--h); left: calc(var(--w) / -2); --student-color: #3d6a89; }
+.student-face { position: absolute; display: block; width: var(--w); height: var(--h); background: var(--student-color); backface-visibility: hidden; }
+.student-face-front { transform: translateZ(calc(var(--d) / 2)); }
+.student-face-back { transform: rotateY(180deg) translateZ(calc(var(--d) / 2)); filter: brightness(.85); }
+.student-face-left, .student-face-right { width: var(--d); left: calc((var(--w) - var(--d)) / 2); filter: brightness(.78); }
+.student-face-left { transform: rotateY(-90deg) translateZ(calc(var(--w) / 2)); }
+.student-face-right { transform: rotateY(90deg) translateZ(calc(var(--w) / 2)); }
+.student-face-top, .student-face-bottom { height: var(--d); top: calc((var(--h) - var(--d)) / 2); }
+.student-face-top { transform: rotateX(90deg) translateZ(calc(var(--h) / 2)); filter: brightness(1.12); }
+.student-face-bottom { transform: rotateX(-90deg) translateZ(calc(var(--h) / 2)); filter: brightness(.6); }
+.student-head .student-solid { --student-color: #bf885e; }
+.student-head .student-face-front { background: linear-gradient(#382820 80%, #bf885e 80%); }
+.student-head .student-face-back { background: radial-gradient(circle at 30% 50%, #302820 0 2px, transparent 3px), radial-gradient(circle at 70% 50%, #302820 0 2px, transparent 3px), linear-gradient(#382820 24%, #bf885e 24%); }
+.student-head .student-face-top { background: #382820; }
+.student-bag .student-solid { --student-color: #d5a43a; }
+.student-bag .student-face-front { background: linear-gradient(90deg, #745520 0 9%, transparent 9% 91%, #745520 91%), linear-gradient(#d5a43a 62%, #b88828 62%); border-radius: 5px; }
+.student-arm-left .student-face, .student-arm-right .student-face { background: linear-gradient(#3d6a89 70%, #bf885e 70%); }
+.student-leg-left .student-face, .student-leg-right .student-face { background: linear-gradient(#293b50 86%, #f0e7d2 86%); }
+.corridor-student[data-state="walking"] .student-arm-left, .corridor-student[data-state="walking"] .student-leg-right { animation: student-step 480ms ease-in-out infinite alternate; }
+.corridor-student[data-state="walking"] .student-arm-right, .corridor-student[data-state="walking"] .student-leg-left { animation: student-step 480ms ease-in-out infinite alternate-reverse; }
+.corridor-student[data-state="opening"] .student-arm-right { transform: translate3d(var(--part-x), var(--part-y), var(--part-z)) rotateX(-82deg); transition: transform 240ms ease-out; }
+@keyframes student-step { from { transform: translate3d(var(--part-x), var(--part-y), var(--part-z)) rotateX(-24deg); } to { transform: translate3d(var(--part-x), var(--part-y), var(--part-z)) rotateX(24deg); } }
+@media (prefers-reduced-motion: reduce) { .corridor-student .student-part { animation: none !important; } }
