@@ -19,6 +19,20 @@ import { sessionLabels, siteConfig } from "../site-config";
     {courseMeta.tags.map((tag) => <li>{tag}</li>)}
   </ul>
 
+  <section class="course-experiences" aria-labelledby="course-experiences-title">
+    <h2 id="course-experiences-title">Step inside Doorology</h2>
+    <CardGrid columns={2}>
+      <Card title="Walk the course corridor" href="/corridor/">
+        <p>Twelve doors, twelve weeks. Walk up to a door and open its studio, lecture and assessment links.</p>
+        <p><small>Desktop · W A S D or arrow keys</small></p>
+      </Card>
+      <Card title="Try Door Lab" href="/lab/">
+        <p>Push, pull, then change the handle. Test whether a door tells you how it actually opens.</p>
+        <p><small>Interactive experiment · hardware and signifiers</small></p>
+      </Card>
+    </CardGrid>
+  </section>
+
   <h2>What you will do</h2>
   <p>
     You will spend the semester on one object: the door. Not doors as a
@@ -73,6 +87,8 @@ import { sessionLabels, siteConfig } from "../site-config";
 </style>
 
 <style>
+  .course-experiences { margin-block: 1.5rem 3rem; }
+  .course-experiences h2 { margin-top: 0; }
   .course-tags {
     display: flex;
     flex-wrap: wrap;
