@@ -1,0 +1,62 @@
+---
+import { withBase } from 'astro-theme-university/url';
+import { courseMeta } from '../course-config';
+import '../styles/doorology-home.css';
+const description = courseMeta.description.match(/^[^.!?]+[.!?]/)?.[0] ?? courseMeta.description;
+---
+<section class="doorology-opening" aria-labelledby="doorology-title">
+  <header class="doorology-opening-heading">
+    <p>{courseMeta.code} <span aria-hidden="true">/</span> {courseMeta.session} · {courseMeta.year}</p>
+    <h1 id="doorology-title">{courseMeta.title}</h1>
+    <p class="doorology-opening-description">{description}</p>
+  </header>
+  <div class="doorology-entrances">
+    <a class="doorology-entrance entrance-course" href={withBase('/corridor/')}>
+      <svg class="entrance-art" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><linearGradient id="hall-floor" x2="0" y2="1"><stop stop-color="#bcaa80"/><stop offset="1" stop-color="#685e48"/></linearGradient><linearGradient id="hall-ceiling" x2="0" y2="1"><stop stop-color="#252e2a"/><stop offset="1" stop-color="#657068"/></linearGradient></defs>
+        <path d="M0 0H800V560H0Z" fill="#a8ad94"/>
+        <path d="M0 0H800L455 213H345Z" fill="url(#hall-ceiling)"/>
+        <path d="M0 560H800L455 320H345Z" fill="url(#hall-floor)"/>
+        <path d="M345 213H455V320H345Z" fill="#eadcb5"/>
+        <path d="M0 0L345 213V320L0 560Z" fill="#d5c9a9"/>
+        <path d="M800 0L455 213V320L800 560Z" fill="#bdb79d"/>
+        <g stroke="#746953" stroke-width="2" opacity=".55"><path d="M0 445H800M140 385H660M250 348H550M0 560L375 320M800 560L425 320M400 560V320"/></g>
+        <g stroke="#fff1be" stroke-width="3"><path d="M192 117H608M263 158H537M307 187H493"/></g>
+        <g stroke="#655e49" stroke-width="7" stroke-linejoin="round">
+          <path d="M76 126L191 177V395L76 461Z" fill="#9bceb6"/>
+          <path d="M223 193L269 213V351L223 378Z" fill="#d5b460"/>
+          <path d="M289 222L315 233V325L289 340Z" fill="#b3bfe1"/>
+          <path d="M325 239L337 244V312L325 319Z" fill="#c8a4d6"/>
+          <path d="M724 126L609 177V395L724 461Z" fill="#9bceb6"/>
+          <path d="M577 193L531 213V351L577 378Z" fill="#d5b460"/>
+          <path d="M511 222L485 233V325L511 340Z" fill="#b3bfe1"/>
+          <path d="M475 239L463 244V312L475 319Z" fill="#c8a4d6"/>
+        </g>
+        <g fill="#263e32" font-family="sans-serif" font-weight="600"><text x="109" y="260" font-size="48">01</text><text x="642" y="260" font-size="48">02</text><text x="238" y="278" font-size="23">03</text><text x="543" y="278" font-size="23">04</text></g>
+        <g fill="#413c2e"><path d="M173 317h12v6h-12zM617 317h12v6h-12z"/></g>
+        <g transform="translate(407 327)"><ellipse cy="107" rx="41" ry="10" fill="#222b2855"/><path d="M-19 57L-22 105H-7L0 67L7 105H22L18 57Z" fill="#273c4a"/><path d="M-17 6Q0-2 17 6L29 57H-29Z" fill="#486a79"/><path d="M-18 13L-32 58M18 13L32 58" stroke="#486a79" stroke-width="12" stroke-linecap="round"/><rect x="-16" y="-27" width="32" height="34" rx="11" fill="#a87b58"/><path d="M-16-12V-23Q0-39 16-23V-6H-16Z" fill="#342921"/><rect x="-16" y="13" width="32" height="37" rx="6" fill="#d1a441"/><path d="M-12 38H12" stroke="#92702d" stroke-width="2"/></g>
+      </svg>
+      <div class="entrance-copy"><p class="entrance-kicker">Explore · Twelve weeks</p><h2>Walk the course<span aria-hidden="true">↗</span></h2><p>A student, twelve doors, your whole semester. Walk up and choose what to learn.</p><span class="entrance-link">Enter the corridor <span aria-hidden="true">→</span></span></div>
+    </a>
+    <a class="doorology-entrance entrance-lab" href={withBase('/lab/')}>
+      <svg class="entrance-art" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><radialGradient id="door-glow"><stop stop-color="#e3d3a8"/><stop offset="1" stop-color="#968365"/></radialGradient><linearGradient id="door-leaf"><stop stop-color="#deb953"/><stop offset="1" stop-color="#a67b26"/></linearGradient></defs>
+        <path d="M0 0H800V560H0Z" fill="url(#door-glow)"/>
+        <path d="M0 427H800V560H0Z" fill="#8f8267"/>
+        <g stroke="#cbb997" opacity=".4"><path d="M0 465H800M0 520H800M400 427V560M250 427L200 560M550 427L600 560"/></g>
+        <path d="M279 92L525 74V430L279 445Z" fill="#2e332e" stroke="#f1dfb4" stroke-width="18"/>
+        <path d="M291 432L423 334L515 423Z" fill="#a28f63"/>
+        <path d="M294 105L454 147V444L294 428Z" fill="url(#door-leaf)" stroke="#705624" stroke-width="5"/>
+        <path d="M309 190L389 211V313L309 299Z" fill="#90b3a6" stroke="#756031" stroke-width="7"/>
+        <path d="M349 201V306" stroke="#756031" stroke-width="5"/>
+        <text x="310" y="158" fill="#4b3b1c" font-family="sans-serif" font-size="28">03</text>
+        <path d="M416 282V341L434 344V287Z" fill="#eee1b2" stroke="#7e754c" stroke-width="2"/>
+        <path d="M307 374L442 396V426L307 411Z" fill="#a79c79"/>
+        <path d="M531 448Q598 411 550 366" fill="none" stroke="#fff0c2" stroke-width="3" stroke-dasharray="6 7"/>
+        <path d="M550 366L551 389M550 366L573 372" fill="none" stroke="#fff0c2" stroke-width="3"/>
+      </svg>
+      <div class="entrance-copy"><p class="entrance-kicker">Experiment · Week 3</p><h2>Try the door lab<span aria-hidden="true">↗</span></h2><p>Would you push or pull? Change one detail and discover what makes a door confusing.</p><span class="entrance-link">Start the experiment <span aria-hidden="true">→</span></span></div>
+    </a>
+  </div>
+  <div class="doorology-opening-footer"><ul aria-label="Course tags">{courseMeta.tags.map(tag => <li>{tag}</li>)}</ul><a href="#course-overview">About the course <span aria-hidden="true">↓</span></a></div>
+</section>
